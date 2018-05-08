@@ -9,6 +9,7 @@
 		<non-jta-data-source>
 			java:/comp/env/jdbc/toysforboys
 		</non-jta-data-source>
+		<class>be.vdab.entities.Order</class>
 		<properties> 
 			<property name='hibernate.show_sql' value='true'/> 
 			<property name='hibernate.format_sql' value='true'/>
