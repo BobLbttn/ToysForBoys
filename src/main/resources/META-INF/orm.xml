@@ -11,4 +11,9 @@
 			order by o.orderDate
 		</query>
 	</named-query>
+	<named-query name='Order.findByOrderId'>
+		<query>
+			select o from Order o where o.id = :id
+		</query>
+	</named-query>
 </entity-mappings>

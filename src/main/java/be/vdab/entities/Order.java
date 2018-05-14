@@ -2,14 +2,20 @@ package be.vdab.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Locale;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GenerationType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
+import javax.persistence.NamedEntityGraphs;
+import javax.persistence.NamedAttributeNode;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -17,6 +23,12 @@ import be.vdab.enums.Status;
 
 @Entity
 @Table(name="orders")
+@NamedEntityGraphs({
+@NamedEntityGraph(name = "Order.metCustomer", attributeNodes = @NamedAttributeNode("customer")),
+@NamedEntityGraph(name = "Order.metCustomerEnLand", 
+							attributeNodes = @NamedAttributeNode(value = "customer", subgraph = "metLand"),
+							subgraphs = @NamedSubgraph(name="metLand", attributeNodes=@NamedAttributeNode("country")))
+})
 public class Order implements Serializable {
 	private final static long serialVersionUID = 1L;
 	
@@ -28,7 +40,10 @@ public class Order implements Serializable {
 	private LocalDate requiredDate;
 	private LocalDate shippedDate;
 	private String comments;
-	private long customerId;
+
+	@ManyToOne(fetch=FetchType.LAZY, optional = false) 
+	@JoinColumn(name = "customerId")
+	private Customer customer;
 	
 	@Enumerated(EnumType.STRING)
 	private Status status;
@@ -76,12 +91,12 @@ public class Order implements Serializable {
 		this.comments = comments;
 	}
 
-	public long getCustomerId() {
-		return customerId;
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setCustomerId(long customerId) {
-		this.customerId = customerId;
+	public void setCustomer(Customer c) {
+		this.customer = c;
 	}
 
 	public Status getStatus() {
@@ -117,8 +132,4 @@ public class Order implements Serializable {
 			return false;
 		return true;
 	}
-
-	
-	
-	
 }

@@ -21,6 +21,15 @@ public class OrderRepository extends AbstractRepository {
 	
 	public List<Order>findWhenNotShippedOrCancelled()
 	{
-		return getEntityManager().createNamedQuery("Order.findWhenNotShippedOrCancelled", Order.class).getResultList();
+		return getEntityManager().createNamedQuery("Order.findWhenNotShippedOrCancelled", Order.class)
+				.setHint("javax.persistence.loadgraph", getEntityManager().createEntityGraph("Order.metCustomer"))
+				.getResultList();
+	}
+
+	public Optional<Order> findByOrderId(long id) {
+		return Optional.ofNullable(getEntityManager().createNamedQuery("Order.findByOrderId", Order.class)
+				.setParameter("id", id)
+				.setHint("javax.persistence.loadgraph", getEntityManager().createEntityGraph("Order.metCustomerEnLand"))
+				.getSingleResult());
 	}
 }

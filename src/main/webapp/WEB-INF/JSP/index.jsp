@@ -10,14 +10,24 @@
 <body>
 	<h1>Unshipped orders</h1>
 	<table>
+		<colgroup>
+			<col style="width:5%">
+			<col style="width:7%">
+			<col style="width:7%">
+			<col style="width:20%">
+			<col style="width:40%">
+			<col style="width:15%">
+			<col style="width:6%">
+		</colgroup>
 		<thead>
 			<tr>
 				<th>ID</th>
 				<th>Ordered</th>
 				<th>Required</th>
 				<th>Customer</th>
-				<th>Comment</th>
+				<th class="comment">Comment</th>
 				<th>Status</th>
+				<th>Shipped</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -26,12 +36,13 @@
 					<c:param name='id' value='${order.id}'/>
 				</c:url>
 				<tr>
-					<td><a href="${orderDetailURL}">${order.id}</a></td>
-					<td><fmt:parseDate type="date" pattern="d-M-yy" value="${order.orderDate}" var="orderDate" /> <fmt:formatDate value="${orderDate}"/></td>
-					<td><fmt:parseDate type="date" pattern="d-M-yy" value="${order.requiredDate}" var="reqDate"/> <fmt:formatDate value="${reqDate}"/></td>
-					<td>${order.customerId}</td>
-					<td>${order.comments}</td>
-					<td><img src="images/${order.status}.png">order.status</td>
+					<td style="text-align:right"><a href="${orderDetailURL}">${order.id}</a></td>
+					<td style="text-align:right"><fmt:parseDate type="date" pattern="yyyy-MM-dd" value="${order.orderDate}" var="orderDate" /> <fmt:formatDate type="date" pattern="d-M-yy" value="${orderDate}"/></td>
+					<td style="text-align:right"><fmt:parseDate type="date" pattern="yyyy-MM-dd" value="${order.requiredDate}" var="reqDate"/> <fmt:formatDate type="date" pattern="d-M-yy" value="${reqDate}"/></td>
+					<td>${order.customer.name}</td>
+					<td class="comment">${order.comments}</td>
+					<td><img src="images/${order.status}.png">&nbsp;${order.status}</td>
+					<td></td>
  				</tr>
 			</c:forEach>			
 		</tbody>

@@ -10,6 +10,8 @@
 			java:/comp/env/jdbc/toysforboys
 		</non-jta-data-source>
 		<class>be.vdab.entities.Order</class>
+		<class>be.vdab.entities.Country</class>
+		<class>be.vdab.entities.Customer</class>
 		<properties> 
 			<property name='hibernate.show_sql' value='true'/> 
 			<property name='hibernate.format_sql' value='true'/>

@@ -11,7 +11,7 @@ table,th,td {
 
 thead tr {
 	color: white;
-	background-color: gray;
+	background-color: Gray;
 }
 
 td {
@@ -19,10 +19,19 @@ td {
 	padding-right: 0.2em;
 }
 
-tr:nth-child(even){
+tbody tr:nth-child(even){
 	background-color: #FAFAFA;
 }
 
-tr:nth-child(odd){
+tbody tr:nth-child(odd){
 	background-color: #E6E6E6;
+}
+
+dt {
+	padding-top:1em;
+}
+
+dd{
+	font-weight: bold;
+	margin-left: 0;
 }
