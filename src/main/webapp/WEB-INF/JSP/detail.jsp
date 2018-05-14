@@ -29,9 +29,40 @@
 		<dd>${order.comments}</dd>
 		<dt>Details:</dt>
 		<dd>
+			<table>
+				<thead>
+					<tr>
+						<th>Product</th>
+						<th>Price Each</th>
+						<th>Quantity</th>
+						<th>Value</th>
+						<th>Deliverable</th>
+					</tr>
+				</thead>
+				<tbody>
+				    <c:set var="total_value" value=0 />
+					<c:forEach items="${order.orderdetails}" var="orderlijn">
+						<tr>
+							<td>${orderlijn.name}</td>
+							<td>${orderlijn.priceEach}</td>
+							<td>${orderlijn.quantity}</td>
+				    		<c:set var="value" value="${orderlijn.priceEach*orderlijn.quantity}" />
+				    		<c:set var="total_value" value="${total_value+value}" />
+							<td>${value}</td>
+							<td>
+								<c:choose>
+									<c:when test="${orderlijn.quantity <= orderlijn.product.quanityInStock}">&check</c:when>
+									<c:otherwise>&cross</c:otherwise>
+								</c:choose>
+							</td>
+		 				</tr>
+					</c:forEach>			
+				</tbody>
+			</table>
 		</dd>
 		<dt>Value:</dt>
 		<dd>
+			${total_value}
 		</dd>
 	</dl>
 </body>

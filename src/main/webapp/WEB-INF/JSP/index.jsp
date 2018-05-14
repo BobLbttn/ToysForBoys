@@ -25,7 +25,7 @@
 				<th>Ordered</th>
 				<th>Required</th>
 				<th>Customer</th>
-				<th class="comment">Comment</th>
+				<th>Comment</th>
 				<th>Status</th>
 				<th>Shipped</th>
 			</tr>

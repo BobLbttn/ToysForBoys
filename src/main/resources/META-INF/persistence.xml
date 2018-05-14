@@ -12,6 +12,8 @@
 		<class>be.vdab.entities.Order</class>
 		<class>be.vdab.entities.Country</class>
 		<class>be.vdab.entities.Customer</class>
+		<class>be.vdab.entities.Product</class>
+		<class>be.vdab.valueObjects.OrderDetail</class>
 		<properties> 
 			<property name='hibernate.show_sql' value='true'/> 
 			<property name='hibernate.format_sql' value='true'/>

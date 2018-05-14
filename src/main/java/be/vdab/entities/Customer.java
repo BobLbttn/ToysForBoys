@@ -21,11 +21,11 @@ public class Customer implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	String name;
-	String streetAndNumber;
-	String city;
-	String state;
-	String postalCode;
+	private String name;
+	private String streetAndNumber;
+	private String city;
+	private String state;
+	private String postalCode;
 	
 	@ManyToOne(fetch=FetchType.LAZY, optional = false) 
 	@JoinColumn(name = "countryId")

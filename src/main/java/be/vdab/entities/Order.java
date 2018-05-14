@@ -2,7 +2,10 @@ package be.vdab.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -20,6 +23,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import be.vdab.enums.Status;
+import be.vdab.valueObjects.OrderDetail;
 
 @Entity
 @Table(name="orders")
@@ -44,6 +48,10 @@ public class Order implements Serializable {
 	@ManyToOne(fetch=FetchType.LAZY, optional = false) 
 	@JoinColumn(name = "customerId")
 	private Customer customer;
+	
+	@ElementCollection
+	@CollectionTable(name = "orderdetails", joinColumns=@JoinColumn(name = "orderId"))
+	private Set<OrderDetail> orderdetails;
 	
 	@Enumerated(EnumType.STRING)
 	private Status status;
@@ -101,6 +109,14 @@ public class Order implements Serializable {
 
 	public Status getStatus() {
 		return status;
+	}
+
+	public Set<OrderDetail> getOrderdetails() {
+		return orderdetails;
+	}
+
+	public void setOrderdetails(Set<OrderDetail> orderdetails) {
+		this.orderdetails = orderdetails;
 	}
 
 	public void setStatus(Status status) {
