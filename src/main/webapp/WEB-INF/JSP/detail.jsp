@@ -51,7 +51,7 @@
 							<td>${value}</td>
 							<td>
 								<c:choose>
-									<c:when test="${orderlijn.quantity <= orderlijn.product.quanityInStock}">&check</c:when>
+									<c:when test="${orderlijn.quantity <= orderlijn.product.quantityInStock}">&check</c:when>
 									<c:otherwise>&cross</c:otherwise>
 								</c:choose>
 							</td>
