@@ -9,6 +9,7 @@
 </head>
 <body>
 	<h1>Unshipped orders</h1>
+	<form>
 	<table>
 		<colgroup>
 			<col style="width:5%">
@@ -42,10 +43,12 @@
 					<td>${order.customer.name}</td>
 					<td class="comment">${order.comments}</td>
 					<td><img src="images/${order.status}.png">&nbsp;${order.status}</td>
-					<td></td>
+					<td><input type="checkbox" name="id" value="${order.id}"/></td>
  				</tr>
 			</c:forEach>			
 		</tbody>
 	</table>
+	<input type="submit" value="Set as shipped">
+	</form>
 </body>
 </html>

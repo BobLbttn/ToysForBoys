@@ -14,8 +14,6 @@ import be.vdab.entities.Product;
 public class OrderDetail implements Serializable {
 	private final static long serialVersionUID = 1L;
 	
-	private long orderId;
-	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name="productid")
 	private Product product;
@@ -24,14 +22,6 @@ public class OrderDetail implements Serializable {
 	private BigDecimal priceEach;
 
 	public OrderDetail() {
-	}
-
-	public long getOrderId() {
-		return orderId;
-	}
-
-	public void setOrderId(long orderId) {
-		this.orderId = orderId;
 	}
 
 	public Product getProduct() {
@@ -57,5 +47,8 @@ public class OrderDetail implements Serializable {
 	public void setPriceEach(BigDecimal priceEach) {
 		this.priceEach = priceEach;
 	}
-
+	
+	public BigDecimal getValueOrderDetail(){
+		return priceEach.multiply(BigDecimal.valueOf(quantityOrdered));
+	}
 }

@@ -40,22 +40,21 @@
 					</tr>
 				</thead>
 				<tbody>
-				    <c:set var="total_value" value=0 />
+				    <c:set var="total_value" value="0" />
 					<c:forEach items="${order.orderdetails}" var="orderlijn">
-						<tr>
-							<td>${orderlijn.name}</td>
+						<tr class="detailorders">
+							<td>${orderlijn.product.name}</td>
 							<td>${orderlijn.priceEach}</td>
-							<td>${orderlijn.quantity}</td>
-				    		<c:set var="value" value="${orderlijn.priceEach*orderlijn.quantity}" />
-				    		<c:set var="total_value" value="${total_value+value}" />
-							<td>${value}</td>
-							<td>
+							<td>${orderlijn.quantityOrdered}</td>
+							<td>${orderlijn.valueOrderDetail}</td>
+							<td style="text-align:center">
 								<c:choose>
-									<c:when test="${orderlijn.quantity <= orderlijn.product.quantityInStock}">&check</c:when>
-									<c:otherwise>&cross</c:otherwise>
+									<c:when test="${orderlijn.quantityOrdered <= orderlijn.product.quantityInStock}">&check;</c:when>
+									<c:otherwise>&cross;</c:otherwise>
 								</c:choose>
 							</td>
 		 				</tr>
+				    	<c:set var="total_value" value="${total_value+orderlijn.valueOrderDetail}" />
 					</c:forEach>			
 				</tbody>
 			</table>
