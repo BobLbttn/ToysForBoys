@@ -41,14 +41,16 @@
 					<td style="text-align:right"><fmt:parseDate type="date" pattern="yyyy-MM-dd" value="${order.orderDate}" var="orderDate" /> <fmt:formatDate type="date" pattern="d-M-yy" value="${orderDate}"/></td>
 					<td style="text-align:right"><fmt:parseDate type="date" pattern="yyyy-MM-dd" value="${order.requiredDate}" var="reqDate"/> <fmt:formatDate type="date" pattern="d-M-yy" value="${reqDate}"/></td>
 					<td>${order.customer.name}</td>
-					<td class="comment">${order.comments}</td>
+					<td>${order.comments}</td>
 					<td><img src="images/${order.status}.png">&nbsp;${order.status}</td>
-					<td><input type="checkbox" name="id" value="${order.id}"/></td>
+					<td><input type="checkbox" name="id" value="${order.id}" /></td>
  				</tr>
 			</c:forEach>			
 		</tbody>
 	</table>
-	<input type="submit" value="Set as shipped">
+	<div class="setshipped">
+		<input type="submit" value="Set as shipped" >
+	</div>
 	</form>
 </body>
 </html>

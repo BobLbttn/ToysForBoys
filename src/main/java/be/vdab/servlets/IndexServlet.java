@@ -27,4 +27,11 @@ public class IndexServlet extends HttpServlet {
 		request.getRequestDispatcher(VIEW).forward(request, response);
 	}
 
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		if (req.getParameterValues("id") != null) {
+			
+		}
+	}
+
 }
