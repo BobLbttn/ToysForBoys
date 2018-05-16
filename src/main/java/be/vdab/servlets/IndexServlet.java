@@ -22,7 +22,6 @@ public class IndexServlet extends HttpServlet {
 	private static final String VIEW = "/WEB-INF/JSP/index.jsp";
 	private static final String REDIRECT_URL = "%s/unshipped.html";
 	private static transient OrderService os = new OrderService();
-	private List<Order> unshippedOrders = new LinkedList<>();
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -34,8 +33,13 @@ public class IndexServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
 		if (req.getParameterValues("id") != null) {
+
+			List<Order> unshippedOrders = new LinkedList<>();
+			List<Order> failedOrders = new LinkedList<>();
 			String[] ids = req.getParameterValues("id");
+
 			for (int i=0; i<ids.length; i++) {
 				long id = Long.parseLong(ids[i]);
 				try {
@@ -45,14 +49,19 @@ public class IndexServlet extends HttpServlet {
 					if (e.getMessage().equalsIgnoreCase("unshipped")) {
 						os.findByOrderId(id).ifPresent(order -> unshippedOrders.add(order));
 					}
+					else {
+						os.findByOrderId(id).ifPresent(order -> failedOrders.add(order));
+					}
+						
 				}
 			}
-			if (unshippedOrders.isEmpty()) {
+			if (unshippedOrders.isEmpty() && failedOrders.isEmpty()) {
 				req.setAttribute("orders", os.findWhenNotShippedOrCancelled());
 				req.getRequestDispatcher(VIEW).forward(req, resp);
 			}
 			else {
 				req.setAttribute("unshippedorders", unshippedOrders);
+				req.setAttribute("fouten", failedOrders);
 				resp.sendRedirect(resp.encodeRedirectURL(String.format(REDIRECT_URL, req.getContextPath())));
 			}
 		}

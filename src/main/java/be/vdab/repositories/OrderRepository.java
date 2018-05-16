@@ -44,7 +44,7 @@ public class OrderRepository extends AbstractRepository {
 		
 		getEntityManager().createNamedQuery("Order.updateStatusToShipped")
 							.setParameter("id", id)
-							.setLockMode(LockModeType.PESSIMISTIC_WRITE)
+//							.setLockMode(LockModeType.PESSIMISTIC_WRITE)
 							.executeUpdate();
 	}
 	

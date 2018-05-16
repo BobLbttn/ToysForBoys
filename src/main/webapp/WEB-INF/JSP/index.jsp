@@ -9,7 +9,7 @@
 </head>
 <body>
 	<h1>Unshipped orders</h1>
-	<form>
+	<form method="post">
 	<table>
 		<colgroup>
 			<col style="width:5%">

@@ -18,7 +18,7 @@
 	</named-query>
 	<named-query name='Order.updateStatusToShipped'>
 		<query>
-			update Order o set o.status="SHIPPED", o.shippedDate=current_date where o.id = :id
+			update Order o set o.status='SHIPPED', o.shippedDate=current_date where o.id = :id
 		</query>
 	</named-query>
 </entity-mappings>
