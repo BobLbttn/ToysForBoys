@@ -2,6 +2,7 @@ package be.vdab.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -23,6 +24,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import be.vdab.enums.Status;
+import be.vdab.exceptions.UnshippedOrderException;
 import be.vdab.valueObjects.OrderDetail;
 
 @Entity
@@ -125,6 +127,24 @@ public class Order implements Serializable {
 
 	public int getVersion() {
 		return version;
+	}
+	
+	public void updateQuantityInOrderAndStock() throws UnshippedOrderException {
+		for (Iterator<OrderDetail> i = orderdetails.iterator(); i.hasNext(); ) {
+			OrderDetail od = i.next();
+			long q_ordered = od.getQuantityOrdered();
+			long q_inOrder = od.getProduct().getQuantityInOrder();
+			long q_inStock = od.getProduct().getQuantityInStock();
+			
+			if (q_ordered <= q_inStock) {
+				q_inStock -= q_ordered;
+				q_inOrder -= q_ordered;
+				od.getProduct().setQuantityInOrder(q_inOrder);
+				od.getProduct().setQuantityInStock(q_inStock);
+			}
+			else
+				throw new UnshippedOrderException("unshipped");
+		}
 	}
 
 	@Override

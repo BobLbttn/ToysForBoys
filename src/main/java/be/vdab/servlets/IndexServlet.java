@@ -1,6 +1,8 @@
 package be.vdab.servlets;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import be.vdab.entities.Order;
 import be.vdab.services.OrderService;
 
 /**
@@ -17,7 +20,9 @@ import be.vdab.services.OrderService;
 public class IndexServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/JSP/index.jsp";
+	private static final String REDIRECT_URL = "%s/unshipped.html";
 	private static transient OrderService os = new OrderService();
+	private List<Order> unshippedOrders = new LinkedList<>();
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -30,8 +35,32 @@ public class IndexServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		if (req.getParameterValues("id") != null) {
-			
+			String[] ids = req.getParameterValues("id");
+			for (int i=0; i<ids.length; i++) {
+				long id = Long.parseLong(ids[i]);
+				try {
+					os.shipOrder(id);
+				}
+				catch (Exception e) {
+					if (e.getMessage().equalsIgnoreCase("unshipped")) {
+						os.findByOrderId(id).ifPresent(order -> unshippedOrders.add(order));
+					}
+				}
+			}
+			if (unshippedOrders.isEmpty()) {
+				req.setAttribute("orders", os.findWhenNotShippedOrCancelled());
+				req.getRequestDispatcher(VIEW).forward(req, resp);
+			}
+			else {
+				req.setAttribute("unshippedorders", unshippedOrders);
+				resp.sendRedirect(resp.encodeRedirectURL(String.format(REDIRECT_URL, req.getContextPath())));
+			}
 		}
+		else {
+			req.setAttribute("orders", os.findWhenNotShippedOrCancelled());
+			req.getRequestDispatcher(VIEW).forward(req, resp);
+		}
+			
 	}
 
 }
