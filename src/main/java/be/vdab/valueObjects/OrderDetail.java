@@ -51,4 +51,40 @@ public class OrderDetail implements Serializable {
 	public BigDecimal getValueOrderDetail(){
 		return priceEach.multiply(BigDecimal.valueOf(quantityOrdered));
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((priceEach == null) ? 0 : priceEach.hashCode());
+		result = prime * result + ((product == null) ? 0 : product.hashCode());
+		result = prime * result + (int) (quantityOrdered ^ (quantityOrdered >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OrderDetail other = (OrderDetail) obj;
+		if (priceEach == null) {
+			if (other.priceEach != null)
+				return false;
+		} else if (!priceEach.equals(other.priceEach))
+			return false;
+		if (product == null) {
+			if (other.product != null)
+				return false;
+		} else if (!product.equals(other.product))
+			return false;
+		if (quantityOrdered != other.quantityOrdered)
+			return false;
+		return true;
+	}
+	
+	
 }

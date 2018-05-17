@@ -36,7 +36,7 @@ public class IndexServlet extends HttpServlet {
 
 		if (req.getParameterValues("id") != null) {
 
-			List<Order> unshippedOrders = new LinkedList<>();
+			List<Order> orders = new LinkedList<>();
 			List<Order> failedOrders = new LinkedList<>();
 			String[] ids = req.getParameterValues("id");
 
@@ -47,7 +47,8 @@ public class IndexServlet extends HttpServlet {
 				}
 				catch (Exception e) {
 					if (e.getMessage().equalsIgnoreCase("unshipped")) {
-						os.findByOrderId(id).ifPresent(order -> unshippedOrders.add(order));
+						os.findByOrderId(id).ifPresent(order -> orders.add(order));
+						
 					}
 					else {
 						os.findByOrderId(id).ifPresent(order -> failedOrders.add(order));
@@ -55,20 +56,19 @@ public class IndexServlet extends HttpServlet {
 						
 				}
 			}
-			if (unshippedOrders.isEmpty() && failedOrders.isEmpty()) {
+			if (orders.isEmpty() && failedOrders.isEmpty()) {
 				req.setAttribute("orders", os.findWhenNotShippedOrCancelled());
 				req.getRequestDispatcher(VIEW).forward(req, resp);
 			}
 			else {
-				req.setAttribute("unshippedorders", unshippedOrders);
+				req.setAttribute("aantalUnshipped", orders.size());
 				req.setAttribute("fouten", failedOrders);
+				req.setAttribute("aantalfouten", failedOrders.size());
 				resp.sendRedirect(resp.encodeRedirectURL(String.format(REDIRECT_URL, req.getContextPath())));
 			}
 		}
-		else {
-			req.setAttribute("orders", os.findWhenNotShippedOrCancelled());
-			req.getRequestDispatcher(VIEW).forward(req, resp);
-		}
+		req.setAttribute("orders", os.findWhenNotShippedOrCancelled());
+		req.getRequestDispatcher(VIEW).forward(req, resp);
 			
 	}
 

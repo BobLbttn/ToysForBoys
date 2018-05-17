@@ -9,6 +9,9 @@
 </head>
 <body>
 	<h1>Unshipped orders</h1>
+	<c:if test="${aantalUnshipped > 0}">
+		<h2>shipping failed, for ${aantalUnshipped} orders not enough stock</h2>	
+	</c:if>
 	<form method="post">
 	<table>
 		<colgroup>
