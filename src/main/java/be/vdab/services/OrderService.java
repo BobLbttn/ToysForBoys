@@ -23,8 +23,7 @@ public class OrderService extends AbstractService {
 	public void shipOrder(long id) throws Exception{
 		beginTransaction();
 		try {
-			or.updateStatusToShipped(id);
-			or.readWithLock(id).ifPresent(order -> order.updateQuantityInOrderAndStock());
+			or.readWithLock(id).ifPresent(order -> {order.updateStatusToShipped();order.updateQuantityInOrderAndStock();} );
 			commit();
 		}
 		catch (PersistenceException e) {

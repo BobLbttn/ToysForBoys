@@ -9,8 +9,15 @@
 </head>
 <body>
 	<h1>Unshipped orders</h1>
-	<c:if test="${aantalUnshipped > 0}">
-		<h2>shipping failed, for ${aantalUnshipped} orders not enough stock</h2>	
+	<c:if test="${not empty aantalUnshipped and aantalUnshipped > 0}">
+		<c:forEach items="${unshippedorders}" var="order">
+			<h2>shipping failed for order ${order.id}, not enough stock</h2>
+		</c:forEach>	
+	</c:if>
+	<c:if test="${not empty aantalFouten and aantalFouten > 0}">
+		<c:forEach items="${failedorders}" var="order">
+			<h2>database failure for order ${order.id}</h2>
+		</c:forEach>	
 	</c:if>
 	<form method="post">
 	<table>

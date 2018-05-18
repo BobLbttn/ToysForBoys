@@ -20,7 +20,6 @@ import be.vdab.services.OrderService;
 public class IndexServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/JSP/index.jsp";
-	private static final String REDIRECT_URL = "%s/unshipped.html";
 	private static transient OrderService os = new OrderService();
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -36,7 +35,7 @@ public class IndexServlet extends HttpServlet {
 
 		if (req.getParameterValues("id") != null) {
 
-			List<Order> orders = new LinkedList<>();
+			List<Order> unshippedOrders = new LinkedList<>();
 			List<Order> failedOrders = new LinkedList<>();
 			String[] ids = req.getParameterValues("id");
 
@@ -47,7 +46,7 @@ public class IndexServlet extends HttpServlet {
 				}
 				catch (Exception e) {
 					if (e.getMessage().equalsIgnoreCase("unshipped")) {
-						os.findByOrderId(id).ifPresent(order -> orders.add(order));
+						os.findByOrderId(id).ifPresent(order -> unshippedOrders.add(order));
 						
 					}
 					else {
@@ -56,20 +55,15 @@ public class IndexServlet extends HttpServlet {
 						
 				}
 			}
-			if (orders.isEmpty() && failedOrders.isEmpty()) {
-				req.setAttribute("orders", os.findWhenNotShippedOrCancelled());
-				req.getRequestDispatcher(VIEW).forward(req, resp);
-			}
-			else {
-				req.setAttribute("aantalUnshipped", orders.size());
-				req.setAttribute("fouten", failedOrders);
+			if (!unshippedOrders.isEmpty() || !failedOrders.isEmpty()) {
+				req.setAttribute("unshippedorders", unshippedOrders);
+				req.setAttribute("aantalUnshipped", unshippedOrders.size());
+				req.setAttribute("failedorders", failedOrders);
 				req.setAttribute("aantalfouten", failedOrders.size());
-				resp.sendRedirect(resp.encodeRedirectURL(String.format(REDIRECT_URL, req.getContextPath())));
 			}
 		}
 		req.setAttribute("orders", os.findWhenNotShippedOrCancelled());
 		req.getRequestDispatcher(VIEW).forward(req, resp);
-			
 	}
 
 }

@@ -11,14 +11,11 @@
 			order by o.orderDate
 		</query>
 	</named-query>
+
 	<named-query name='Order.findByOrderId'>
 		<query>
 			select o from Order o where o.id = :id
 		</query>
 	</named-query>
-	<named-query name='Order.updateStatusToShipped'>
-		<query>
-			update Order o set o.status='SHIPPED', o.shippedDate=current_date where o.id = :id
-		</query>
-	</named-query>
+
 </entity-mappings>

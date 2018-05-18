@@ -129,6 +129,11 @@ public class Order implements Serializable {
 		return version;
 	}
 	
+	public void updateStatusToShipped() {
+		setStatus(Status.SHIPPED);
+		setShippedDate(LocalDate.now());
+	}
+	
 	public void updateQuantityInOrderAndStock() throws UnshippedOrderException {
 		for (Iterator<OrderDetail> i = orderdetails.iterator(); i.hasNext(); ) {
 			OrderDetail od = i.next();
