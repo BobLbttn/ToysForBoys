@@ -14,7 +14,7 @@
 			<h2>shipping failed for order ${order.id}, not enough stock</h2>
 		</c:forEach>	
 	</c:if>
-	<c:if test="${not empty aantalFouten and aantalFouten > 0}">
+	<c:if test="${not empty aantalfouten and aantalfouten > 0}">
 		<c:forEach items="${failedorders}" var="order">
 			<h2>database failure for order ${order.key}: ${order.value}</h2>
 		</c:forEach>	
