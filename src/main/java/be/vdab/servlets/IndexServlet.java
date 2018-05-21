@@ -1,8 +1,11 @@
 package be.vdab.servlets;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,9 +27,17 @@ public class IndexServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
  
-		request.setAttribute("orders", os.findWhenNotShippedOrCancelled());
+		try {
+			request.setAttribute("orders", os.findWhenNotShippedOrCancelled());
+		}
+		catch (Exception e){
+			String errmsg = e.getMessage();
+			request.setAttribute("fout",
+					 Collections.singletonMap("msg", errmsg));
+		}
 		request.getRequestDispatcher(VIEW).forward(request, response);
 	}
 
@@ -36,7 +47,7 @@ public class IndexServlet extends HttpServlet {
 		if (req.getParameterValues("id") != null) {
 
 			List<Order> unshippedOrders = new LinkedList<>();
-			List<Order> failedOrders = new LinkedList<>();
+			Map<String, String> failedOrders = new HashMap<>();
 			String[] ids = req.getParameterValues("id");
 
 			for (int i=0; i<ids.length; i++) {
@@ -50,7 +61,7 @@ public class IndexServlet extends HttpServlet {
 						
 					}
 					else {
-						os.findByOrderId(id).ifPresent(order -> failedOrders.add(order));
+						failedOrders.put(ids[i], e.getMessage());
 					}
 						
 				}
@@ -62,8 +73,14 @@ public class IndexServlet extends HttpServlet {
 				req.setAttribute("aantalfouten", failedOrders.size());
 			}
 		}
-		req.setAttribute("orders", os.findWhenNotShippedOrCancelled());
+		try {
+			req.setAttribute("orders", os.findWhenNotShippedOrCancelled());
+		}
+		catch (Exception e){
+			String errmsg = e.getMessage();
+			req.setAttribute("fout",
+					 Collections.singletonMap("msg", errmsg));
+		}
 		req.getRequestDispatcher(VIEW).forward(req, resp);
 	}
-
 }

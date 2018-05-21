@@ -16,51 +16,56 @@
 	</c:if>
 	<c:if test="${not empty aantalFouten and aantalFouten > 0}">
 		<c:forEach items="${failedorders}" var="order">
-			<h2>database failure for order ${order.id}</h2>
+			<h2>database failure for order ${order.key}: ${order.value}</h2>
 		</c:forEach>	
 	</c:if>
+ 	<c:if test="${not empty fout.msg}">
+		<h2>failure: ${fout.msg}</h2>
+	</c:if>
+
 	<form method="post">
-	<table>
-		<colgroup>
-			<col style="width:5%">
-			<col style="width:7%">
-			<col style="width:7%">
-			<col style="width:20%">
-			<col style="width:40%">
-			<col style="width:15%">
-			<col style="width:6%">
-		</colgroup>
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Ordered</th>
-				<th>Required</th>
-				<th>Customer</th>
-				<th>Comment</th>
-				<th>Status</th>
-				<th>Shipped</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${orders}" var="order">
-				<c:url value='detail.html' var='orderDetailURL'>
-					<c:param name='id' value='${order.id}'/>
-				</c:url>
+		<table>
+			<colgroup>
+				<col style="width:5%">
+				<col style="width:7%">
+				<col style="width:7%">
+				<col style="width:20%">
+				<col style="width:40%">
+				<col style="width:15%">
+				<col style="width:6%">
+			</colgroup>
+			<thead>
 				<tr>
-					<td style="text-align:right"><a href="${orderDetailURL}">${order.id}</a></td>
-					<td style="text-align:right"><fmt:parseDate type="date" pattern="yyyy-MM-dd" value="${order.orderDate}" var="orderDate" /> <fmt:formatDate type="date" pattern="d-M-yy" value="${orderDate}"/></td>
-					<td style="text-align:right"><fmt:parseDate type="date" pattern="yyyy-MM-dd" value="${order.requiredDate}" var="reqDate"/> <fmt:formatDate type="date" pattern="d-M-yy" value="${reqDate}"/></td>
-					<td>${order.customer.name}</td>
-					<td>${order.comments}</td>
-					<td><img src="images/${order.status}.png">&nbsp;${order.status}</td>
-					<td><input type="checkbox" name="id" value="${order.id}" /></td>
- 				</tr>
-			</c:forEach>			
-		</tbody>
-	</table>
-	<div class="setshipped">
-		<input type="submit" value="Set as shipped" >
-	</div>
+					<th>ID</th>
+					<th>Ordered</th>
+					<th>Required</th>
+					<th>Customer</th>
+					<th>Comment</th>
+					<th>Status</th>
+					<th>Shipped</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${orders}" var="order">
+					<c:url value='detail.html' var='orderDetailURL'>
+						<c:param name='id' value='${order.id}'/>
+					</c:url>
+					<tr>
+						<td style="text-align:right"><a href="${orderDetailURL}">${order.id}</a></td>
+						<td style="text-align:right"><fmt:parseDate type="date" pattern="yyyy-MM-dd" value="${order.orderDate}" var="orderDate" /> <fmt:formatDate type="date" pattern="d-M-yy" value="${orderDate}"/></td>
+						<td style="text-align:right"><fmt:parseDate type="date" pattern="yyyy-MM-dd" value="${order.requiredDate}" var="reqDate"/> <fmt:formatDate type="date" pattern="d-M-yy" value="${reqDate}"/></td>
+						<td>${order.customer.name}</td>
+						<td>${order.comments}</td>
+						<td><img src="images/${order.status}.png">&nbsp;${order.status}</td>
+						<td><input type="checkbox" name="id" value="${order.id}" /></td>
+	 				</tr>
+				</c:forEach>			
+			</tbody>
+		</table>
+		<div class="setshipped">
+			<input type="submit" value="Set as shipped" >
+		</div>
 	</form>
+
 </body>
 </html>
